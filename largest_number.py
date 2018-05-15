@@ -68,3 +68,43 @@ if test_zero:
 else:
   str1 = ''.join(str(e) for e in list1)             
   print(str1)
+### bit more compact ###
+def largestNumber(self, A):
+        def mysort(A):
+            if len(A) == 1:
+                return [A[0]]
+            if len(A) == 2:
+                temp1 = str(A[0]) + str(A[1])
+                temp2 = str(A[1]) + str(A[0])
+                if int(temp1) > int(temp2):
+                    return [A[0],A[1]]
+                else:
+                    return [A[1],A[0]]
+            A_left = mysort(A[:len(A)//2])
+            A_rgt  = mysort(A[len(A)//2:])
+            i = 0
+            j = 0
+            temp = []
+            while(i < len(A_left) and j < len(A_rgt)):
+                if int(str(A_left[i])+str(A_rgt[j]))>int(str(A_rgt[j]) + str(A_left[i])):
+                    temp.append(A_left[i])
+                    i += 1
+                else:
+                    temp.append(A_rgt[j])
+                    j += 1
+                if i == len(A_left):
+                    temp.extend(A_rgt[j:])
+                    break
+                if j == len(A_rgt):
+                    temp.extend(A_left[i:])
+                    break
+            return temp
+        #myA = []
+        #for i in A:
+        #    myA.append(i)
+        mytemp = mysort(A)
+        i = 0
+        while(i < len(mytemp)-1 and mytemp[i] == 0):
+            i += 1
+        mytemp = mytemp[i:]
+        return ''.join(str(x) for x in mytemp)
