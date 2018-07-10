@@ -108,3 +108,45 @@ def largestNumber(self, A):
             i += 1
         mytemp = mytemp[i:]
         return ''.join(str(x) for x in mytemp)
+     ##another one##
+     def largestNumber(self, A):
+        def find_start(T):
+            int1 = int(str(T[0]) + str(T[1]))
+            int2 = int(str(T[1]) + str(T[0]))
+            if int1 < int2:
+                return 0
+            return 1
+        def merge(st):
+            if len(st) == 1:
+                return st
+            if len(st) == 2:
+                if find_start(st) == 0:
+                    st[0],st[1] = st[1],st[0]
+                return st
+            st_lft = merge(st[:len(st)//2])
+            st_rgt = merge(st[len(st)//2:])
+            i = 0
+            j = 0
+            glob_lst = []
+            while(i < len(st_lft) and j < len(st_rgt)):
+                temp = [st_lft[i],st_rgt[j]]
+                if find_start(temp) == 1:
+                    glob_lst.append(st_lft[i])
+                    i += 1
+                    if i == len(st_lft):
+                        glob_lst.extend(st_rgt[j:])
+                else:
+                    glob_lst.append(st_rgt[j])
+                    j += 1
+                    if j == len(st_rgt):
+                        glob_lst.extend(st_lft[i:])
+            return glob_lst
+        B = []
+        for i in A:
+            B.append(i)
+        my_ret = merge(B)
+        i = 0
+        while(i < len(my_ret)-1 and my_ret[i] == 0):
+            i += 1
+        my_ret = my_ret[i:]
+        return ''.join(str(x) for x in my_ret)
